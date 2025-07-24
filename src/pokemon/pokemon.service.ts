@@ -1,9 +1,10 @@
-import { BadRequestException, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, InternalServerErrorException, NotFoundException, Module } from '@nestjs/common';
 import { CreatePokemonDto } from './dto/create-pokemon.dto';
 import { UpdatePokemonDto } from './dto/update-pokemon.dto';
 import { Pokemon } from './entities/pokemon.entity';
 import { isValidObjectId, Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
+import { PaginationDto } from 'src/common/dto/pagination.dto';
 
 @Injectable()
 export class PokemonService {
@@ -24,8 +25,11 @@ export class PokemonService {
     }
   }
 
-  findAll() {
-    return `This action returns all pokemon`;
+  async findAll(params: PaginationDto) {
+    return await this.pokemonModel.find()
+    .limit(params.limit)
+    .skip(params.offset)
+    
   }
 
   async findOne(term: string) {
@@ -63,7 +67,7 @@ export class PokemonService {
   }
 
   async remove(id: string) {
-    const { deletedCount } = await this.pokemonModel.deleteOne({_id: id});
+    const { deletedCount } = await this.pokemonModel.deleteOne({ _id: id });
     if (!deletedCount) throw new BadRequestException(`id not found ${id}`);
   }
 

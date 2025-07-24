@@ -51,8 +51,15 @@ $ mau deploy
 
 
 1. levantar mongo 
-docket-compose up -d
+docker-compose up -d
 
 2. stack usado 
 *MongoDB
 *Nest
+
+3. restablecer valores en db
+localhost:3000/api/v2/seed
+
+4. clonar archivo __.env.template__ y renombrar la copia como .env
+
+5. llenar las varaibles del nuevo archivo nombrado ``.env`` 
